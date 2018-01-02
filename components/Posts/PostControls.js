@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Input from '../Themes/Blog/UI/Input';
+import Button from '../Themes/Blog/UI/Button';
 import Aux from '../hoc/Auxs';
 
 class PostControls extends Component {
@@ -19,6 +20,9 @@ class PostControls extends Component {
 				elementConfig: {
 					fullWidth: true,
 					hintText: 'รายละเอียด',
+					multiLine: true,
+					rows: 4,
+					rowsMax: 8
 				},
 				value: ''
 			}
@@ -55,8 +59,11 @@ class PostControls extends Component {
 	render() {
 		return (
 			<Aux>
-				<div style={{width: '80%',margin: 'auto'}}>{this.getControls()}</div>
-				<div>{this.state.controls.title.value}</div>
+				<div style={{width: '80%',margin: 'auto'}}>
+					{this.getControls()}
+					<Button label="เพิ่มบทความ" fullWidth={true} primary={true}  />
+				</div>
+				
 			</Aux>
 		)
 	}
