@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Input from '../Themes/Blog/UI/Input';
 import Button from '../Themes/Blog/UI/Button';
 import Aux from '../hoc/Auxs';
+import withRedux from 'next-redux-wrapper';
+import initStore from '../../store/initStore';
 
 class PostControls extends Component {
 	
@@ -39,7 +41,7 @@ class PostControls extends Component {
 		let  updatedElement = {...updatedControls[fromIdentifier]}
 		updatedElement.value = event.target.value;
 		updatedControls[fromIdentifier] = updatedElement;
-		console.log(updatedControls[fromIdentifier].value);
+		// console.log(updatedControls[fromIdentifier].value);
 		this.setState({controls: updatedControls});
 	};
 
@@ -61,7 +63,7 @@ class PostControls extends Component {
 			<Aux>
 				<div style={{width: '80%',margin: 'auto'}}>
 					{this.getControls()}
-					<Button label="เพิ่มบทความ" fullWidth={true} primary={true}  />
+					<Button label="เพิ่มบทความ" fullWidth={true} primary={true} onClick={() => this.props.postSubmitHandler(this.state.controls)} />
 				</div>
 				
 			</Aux>

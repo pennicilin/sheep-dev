@@ -10,10 +10,13 @@ const layout = ( props ) => {
 	return (
 		<Aux>
 			<AppBar title="My Blog" />
-			<Navigator />
-			<Header />
-			<MainMenu />
-				{ props.children }
+			<div style={{padding: '15px'}}>
+				<Navigator />
+				<Header />
+				
+				<MainMenu />
+					{ props.children }
+			</div>
 			<Footer />
 		</Aux>
 	);
