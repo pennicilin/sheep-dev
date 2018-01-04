@@ -7,6 +7,7 @@ import initStore from '../../store/initStore';
 class PostsPage extends Component {
 	
 	render() {
+		
 		return (
 			<section>
 				<Posts {...this.props} />

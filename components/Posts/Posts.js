@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Post from './Post';
-// import { connect } from 'react-redux';
+import * as actionCreator from './store/actionCreator';
+import { connect } from 'react-redux';
 
-const posts = ( props ) => {
+class Posts extends Component {
 	// console.log(props.post);
-	const posts = ( props.post.posts ) ? props.post.posts : null; 
+	// const posts = ( this.props.post.posts ) ? this.props.post.posts : null; 
 	
-	const getPosts = () => {
-		return posts.map( post => (
-			<Post key={post.id} title={post.title} content={post.content} />
+	clickedDelete = (postId) => {
+		this.props.onDeletePost( postId );
+	};
+
+	getPosts = () => {
+		return this.props.post.posts.map( post => (
+			<Post 
+				key={post.id} 
+				title={post.title} 
+				content={post.content} 
+				clickedDelete={() => this.clickedDelete( post.id )} />
 		));
 	};
 
-	return ( posts ) ? getPosts() : <p>Loading ... </p>;
+	render() {
+		return ( this.props.post.posts ) ? this.getPosts() : <p>Loading ... </p>;
+	};
+};
+/**/
+const mapDispatchToProps = dispatch => {
+	return {
+		onDeletePost: ( postId ) => {
+			dispatch(actionCreator.deletePost( {'postId':postId} ));
+		}
+	}
 };
 
-export default posts;
+export default connect( null, mapDispatchToProps )(Posts);

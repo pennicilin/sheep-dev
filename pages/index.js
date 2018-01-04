@@ -10,7 +10,7 @@ class indexPage extends Component {
 		render() {
 			return (
 				<section>
-					<Posts {...this.props} />
+					<Posts />
 				</section>
 			);
 		}
