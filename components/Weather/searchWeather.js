@@ -3,6 +3,7 @@ import Input from '../Themes/Blog/UI/Input';
 import Button from '../Themes/Blog/UI/Button';
 import * as actionCreator from './store/actionCreator';
 import { connect } from 'react-redux';
+import { createMessage, subscribeToNewMessage } from '../Socket/api';
 
 class SearchWeather extends Component {
 	state = {
@@ -18,6 +19,13 @@ class SearchWeather extends Component {
 		}
 	};
 
+	componentDidMount() {
+		subscribeToNewMessage((err, message) => {
+			console.log( message );
+			this.props.onSetWeather( message );
+		});
+	};
+
 	changedHandler = ( event, fromIdentifier ) => {
 		// console.log( event.target.value, fromIdentifier );
 		const updatedControls = {...this.state.controls};
@@ -29,8 +37,13 @@ class SearchWeather extends Component {
 	};
 
 	checkWeather = () => {
-		this.props.onCheckWeather( this.state.controls.address.value );
+		this.props.onCheckWeather( this.state.controls.address.value, ( data ) => {
+			// Set Socket Event
+			// console.log('PROPS', this.props.socket );
+			createMessage( data );
+		} );
 	};
+
 
 	getControls = () => {
 		let controlsArray = [];
@@ -46,9 +59,10 @@ class SearchWeather extends Component {
 	};
 
 	render() {
-
-		const getWeather = () => {
-			const weathers = this.props.weather.weathers.map( weather => (
+		let weatherResult = null;
+		const getWeatherResult = () => {
+			if ( this.props.weather.weathers.length > 0 ) {
+				weatherResult = this.props.weather.weathers.map( weather => (
 					<div key={ weather.address }>
 						<p>Address: { weather.address }</p>
 						<p>Latitude: { weather.lat }</p>
@@ -57,16 +71,23 @@ class SearchWeather extends Component {
 					</div>
 
 				));
-			return weathers;
+			}
+			return weatherResult;
+		};
+
+		const getMessage = () => {
+			if( this.props.weather.message ) {
+				return this.props.weather.message;
+			}
+			return null;
 		};
 
 		return (
 				<div>
 					{this.getControls()}
 					<Button label="Check" fullWidth={true} primary={true} onClick={this.checkWeather} />
-					{
-						( this.props.weather.weathers.length > 0 ) ? getWeather() : <p></p>
-					}
+					{  getWeatherResult() }
+					<p>{  }</p>
 				</div>
 			);
 	};
@@ -74,7 +95,8 @@ class SearchWeather extends Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onCheckWeather: ( address ) => dispatch(actionCreator.checkWeather( {address: address} ))
+		onCheckWeather: ( address, callback ) => dispatch(actionCreator.checkWeather( {address: address,callback: callback} )),
+		onSetWeather: ( weather ) => dispatch(actionCreator.setWeather( weather )),
 	}
 };
 

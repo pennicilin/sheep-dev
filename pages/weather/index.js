@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-// import Posts from '../../components/Posts/Posts';
+import axios from 'axios';
 import SearchWeather from '../../components/Weather/searchWeather';
 import withLayout from '../../components/hoc/layout';
 import withRedux from 'next-redux-wrapper';
 import initStore from '../../store/initStore';
 
 class WeatherPage extends Component {
-	
+
 	render() {
 		
 		return (

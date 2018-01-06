@@ -8,9 +8,16 @@ export const setWeather = ( payload ) => {
 	}
 };
 
+export const setWeatherEnd = ( payload ) => {
+	return {
+		type: actionTypes.SET_WEATHER_END,
+		payload: payload
+	}
+};
+
 export const checkWeather = ( payload ) => {
-	console.log( payload );
 	return dispatch => {
+		
 		axios.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + payload.address)
 			.then( response => {
 				console.log( response.data );
@@ -21,6 +28,8 @@ export const checkWeather = ( payload ) => {
 					lng: responseData.results[0].geometry.location.lng,
 				}
 				dispatch(setWeather( {weather: locationInfo} ));
+				payload.callback( {weather: locationInfo} );
+				// dispatch(setSocketEvent( {weather: locationInfo} ));
 			}).catch( error => {
 				console.log( error );
 			});
